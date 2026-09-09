@@ -28,28 +28,42 @@
    ========================================================================== */
 :root {
     /* Colores Principales e Institucionales */
-    --color-primario: #003366;          /* Azul institucional de alto contraste para encabezados y botones */
-    --color-primario-hover: #002244;    /* Variante más oscura para el estado :hover de elementos interactivos */
-    --color-acento: #11caa0;            /* Verde agua moderno para destacar elementos clave (tags, bordes activos) */
-    
+    --color-primario: #003366;
+    /* Azul institucional de alto contraste para encabezados y botones */
+    --color-primario-hover: #002244;
+    /* Variante más oscura para el estado :hover de elementos interactivos */
+    --color-acento: #11caa0;
+    /* Verde agua moderno para destacar elementos clave (tags, bordes activos) */
+
     /* Colores de Fondo y Superficie */
-    --color-fondo: #f1f5f9;             /* Gris neutro suave (Slate-100) para el fondo general del lienzo */
-    --color-superficie: #ffffff;        /* Blanco puro para elevar tarjetas, paneles y campos de entrada */
-    
+    --color-fondo: #f1f5f9;
+    /* Gris neutro suave (Slate-100) para el fondo general del lienzo */
+    --color-superficie: #ffffff;
+    /* Blanco puro para elevar tarjetas, paneles y campos de entrada */
+
     /* Jerarquía Tipográfica de Color */
-    --color-texto: #1e293b;             /* Texto principal (Slate-800) de alto contraste para lectura confortable */
-    --color-texto-secundario: #64748b;  /* Texto atenuado (Slate-500) para subtítulos, placeholders y metadata */
-    --color-borde: #cbd5e1;             /* Borde sutil (Slate-300) para delimitar inputs y contenedores */
-    
+    --color-texto: #1e293b;
+    /* Texto principal (Slate-800) de alto contraste para lectura confortable */
+    --color-texto-secundario: #64748b;
+    /* Texto atenuado (Slate-500) para subtítulos, placeholders y metadata */
+    --color-borde: #cbd5e1;
+    /* Borde sutil (Slate-300) para delimitar inputs y contenedores */
+
     /* Tokens para Estados de Respuesta de la API (Códigos HTTP) */
-    --color-exito-fondo: #dcfce7;       /* Verde claro para fondo de alerta 200/201 (Created / Success) */
-    --color-exito-texto: #15803d;       /* Verde oscuro para texto de confirmación legible */
-    --color-error-fondo: #fee2e2;       /* Rojo claro para fondo de alerta 4xx/5xx (Client/Server Error) */
-    --color-error-texto: #b91c1c;       /* Rojo oscuro para máxima alerta visual de fallos */
+    --color-exito-fondo: #dcfce7;
+    /* Verde claro para fondo de alerta 200/201 (Created / Success) */
+    --color-exito-texto: #15803d;
+    /* Verde oscuro para texto de confirmación legible */
+    --color-error-fondo: #fee2e2;
+    /* Rojo claro para fondo de alerta 4xx/5xx (Client/Server Error) */
+    --color-error-texto: #b91c1c;
+    /* Rojo oscuro para máxima alerta visual de fallos */
 
     /* Tokens de Geometría y Elevación */
-    --radio-borde: 8px;                 /* Radio uniforme para suavizar esquinas de tarjetas, botones e inputs */
-    --sombra: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.05); /* Sombra suave para elevación */
+    --radio-borde: 8px;
+    /* Radio uniforme para suavizar esquinas de tarjetas, botones e inputs */
+    --sombra: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
+    /* Sombra suave para elevación */
 }
 
 /* ==========================================================================
@@ -205,7 +219,8 @@ select {
   - Aplica un anillo de foco translúcido (`box-shadow`) que indica al usuario 
     (especialmente con navegación por teclado) qué campo está activo en ese instante.
 */
-input:focus, select:focus {
+input:focus,
+select:focus {
     border-color: var(--color-primario);
     box-shadow: 0 0 0 3px rgba(0, 51, 102, 0.15);
 }
@@ -284,7 +299,7 @@ input:focus, select:focus {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
 }
 
 /* 
@@ -334,7 +349,8 @@ input:focus, select:focus {
     font-size: 14px;
     font-weight: 500;
     margin-bottom: 16px;
-    display: none; /* Controlado dinámicamente desde JS */
+    display: none;
+    /* Controlado dinámicamente desde JS */
 }
 
 /* 
@@ -359,4 +375,3 @@ input:focus, select:focus {
     color: var(--color-exito-texto);
     border: 1px solid #86efac;
 }
-

@@ -17,8 +17,17 @@ class PyLPApiHandler(BaseHTTPRequestHandler):
         self.send_response(status_code)
         # 2. Envía la cabecera indicando que el contenido devuelto es en formato JSON
         self.send_header('Content-Type', 'application/json')
-        # 3. Finaliza la sección de cabeceras HTTP
+        # 3. Habilita CORS para permitir que el Frontend (index.html) consuma la API
+        self.send_header('Access-Control-Allow-Origin', '*')
+        self.send_header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS')
+        self.send_header('Access-Control-Allow-Headers', 'Content-Type')
+        # 4. Finaliza la sección de cabeceras HTTP
         self.end_headers()
+
+    # Maneja la petición de sondeo preliminar (CORS Preflight) que envía el navegador antes de un POST
+    def do_OPTIONS(self):
+        self._set_headers(200)
+
 
     # Maneja las peticiones HTTP GET (Consulta de datos)
     def do_GET(self):
@@ -51,7 +60,7 @@ class PyLPApiHandler(BaseHTTPRequestHandler):
             
             try:
                 # 3. Convierte los bytes leídos de JSON a un diccionario de Python
-                data = json.loads(body.decode('utf-8'))
+                data = json.loads(body.decode('utf-8', errors='replace'))
                 
                 # Validación: Verifica que se hayan enviado los campos requeridos
                 if "nombre" not in data or "precio" not in data:
@@ -81,6 +90,7 @@ class PyLPApiHandler(BaseHTTPRequestHandler):
 if __name__ == '__main__':
     # Configura el servidor en la IP local (puerto 8080) usando nuestro manejador PyLPApiHandler
     server = HTTPServer(('', 8080), PyLPApiHandler)
-    print("🚀 Servidor PyLP III corriendo en http://localhost:8080")
+    print("Servidor PyLP III corriendo en http://localhost:8080")
     # Mantiene el servidor escuchando peticiones indefinidamente
+
     server.serve_forever()

@@ -32,7 +32,14 @@ class PyLPApiHandler(BaseHTTPRequestHandler):
         self.send_response(status_code)  # Envía la linea de estado (Ej: HTTP/1.1 200 OK) 
         self.send_header('Content-Type', 'application/json')  # Le avisa al cliente que el body es JSON 
         self.send_header('Access-Control-Allow-Origin', '*')  # Habilitar CORS para pruebas 
+        self.send_header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS')
+        self.send_header('Access-Control-Allow-Headers', 'Content-Type')
         self.end_headers()  # Fin de la sección de encabezados (agrega linea en blanco obligatoria) 
+
+    def do_OPTIONS(self):
+        """Manejador para la petición preflight de CORS que envía el navegador antes de un POST"""
+        self._set_headers(200)
+ 
  
     def do_GET(self): 
         """ 
@@ -77,9 +84,8 @@ class PyLPApiHandler(BaseHTTPRequestHandler):
             body_bytes = self.rfile.read(length) 
  
             try: 
-                # 3. Convertimos los bytes a string UTF-8 y luego a un diccionario Python con 
-                json.loads 
-                data = json.loads(body_bytes.decode('utf-8')) 
+                # 3. Convertimos los bytes a string UTF-8 y luego a un diccionario Python con json.loads
+                data = json.loads(body_bytes.decode('utf-8', errors='replace')) 
  
                 # 4. VALIDACIÓN DE REGLAS DE NEGOCIO (Saber Hacer Tecnico) 
                 if "nombre" not in data or "precio" not in data: 
