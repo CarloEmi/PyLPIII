@@ -22,8 +22,7 @@ def ejecutar_peticion_get():
         
         # Mostrar el código de estado y el título del primer post obtenido
         print(f"Status Code: {status_code}")
-        print(f"Primer registro recibido: {data[0]['title']}
-")
+        print(f"Primer registro recibido: {data[0]['title']}")
 
 # Función para realizar una petición HTTP POST (Crear nuevo recurso)
 def ejecutar_peticion_post():
@@ -57,8 +56,7 @@ def ejecutar_peticion_post():
         
         # Mostramos los resultados (el código de estado esperado es 201 Created)
         print(f"Status Code: {status_code} (Created)")
-        print(f"Respuesta del servidor: {data}
-")
+        print(f"Respuesta del servidor: {data}")
 
 # Bloque de ejecución principal del script
 if __name__ == "__main__":
