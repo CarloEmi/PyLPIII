@@ -1,36 +1,86 @@
 /* ==========================================================================
    GUÍA DE ESTILOS BASE - PARADIGMAS Y LENGUAJES DE PROGRAMACIÓN III
    UCP Posadas - FAITA
+   ==========================================================================
+   Propósito del Archivo:
+   Centraliza el sistema de diseño visual para el cliente web. Implementa un
+   enfoque modular, accesible y responsivo basado en CSS Variables (Custom
+   Properties), Flexbox y componentes reutilizables (paneles, botones, alertas).
+
+   Modo de Uso Correcto:
+   - No hardcodear colores o medidas repetitivas; utilizar siempre `var(--nombre)`.
+   - Modificar las variables en el bloque `:root` para alterar el tema visual global.
+   - Utilizar las clases de utilidad y componentes en el HTML sin sobreescribir estilos
+     con estilos en línea (inline styles) a menos que sea estrictamente necesario.
    ========================================================================== */
 
-/* 1. SISTEMA DE VARIABLES (Paleta y Espaciado Global) */
+/* ==========================================================================
+   1. SISTEMA DE VARIABLES (Paleta cromática y tokens globales)
+   ==========================================================================
+   Propósito:
+   El pseudo-selector `:root` tiene el alcance más alto del documento (equivalente
+   a <html> pero con mayor especificidad). Define constantes accesibles en todo el
+   árbol CSS mediante la función `var(--nombre)`.
+   
+   Buenas prácticas:
+   - Facilita el mantenimiento centralizado: cambiar un color aquí actualiza toda la app.
+   - Permite implementar fácilmente temas alternativos (como Modo Oscuro / Dark Mode).
+   ========================================================================== */
 :root {
-    --color-primario: #003366;       /* Azul institucional */
-    --color-primario-hover: #002244;
-    --color-acento: #11caa0;         /* Verde agua moderno */
-    --color-fondo: #f1f5f9;          /* Gris muy suave */
-    --color-superficie: #ffffff;     /* Blanco para tarjetas y paneles */
-    --color-texto: #1e293b;
-    --color-texto-secundario: #64748b;
-    --color-borde: #cbd5e1;
+    /* Colores Principales e Institucionales */
+    --color-primario: #003366;          /* Azul institucional de alto contraste para encabezados y botones */
+    --color-primario-hover: #002244;    /* Variante más oscura para el estado :hover de elementos interactivos */
+    --color-acento: #11caa0;            /* Verde agua moderno para destacar elementos clave (tags, bordes activos) */
     
-    /* Estados de respuesta de la API */
-    --color-exito-fondo: #dcfce7;
-    --color-exito-texto: #15803d;
-    --color-error-fondo: #fee2e2;
-    --color-error-texto: #b91c1c;
+    /* Colores de Fondo y Superficie */
+    --color-fondo: #f1f5f9;             /* Gris neutro suave (Slate-100) para el fondo general del lienzo */
+    --color-superficie: #ffffff;        /* Blanco puro para elevar tarjetas, paneles y campos de entrada */
+    
+    /* Jerarquía Tipográfica de Color */
+    --color-texto: #1e293b;             /* Texto principal (Slate-800) de alto contraste para lectura confortable */
+    --color-texto-secundario: #64748b;  /* Texto atenuado (Slate-500) para subtítulos, placeholders y metadata */
+    --color-borde: #cbd5e1;             /* Borde sutil (Slate-300) para delimitar inputs y contenedores */
+    
+    /* Tokens para Estados de Respuesta de la API (Códigos HTTP) */
+    --color-exito-fondo: #dcfce7;       /* Verde claro para fondo de alerta 200/201 (Created / Success) */
+    --color-exito-texto: #15803d;       /* Verde oscuro para texto de confirmación legible */
+    --color-error-fondo: #fee2e2;       /* Rojo claro para fondo de alerta 4xx/5xx (Client/Server Error) */
+    --color-error-texto: #b91c1c;       /* Rojo oscuro para máxima alerta visual de fallos */
 
-    --radio-borde: 8px;
-    --sombra: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
+    /* Tokens de Geometría y Elevación */
+    --radio-borde: 8px;                 /* Radio uniforme para suavizar esquinas de tarjetas, botones e inputs */
+    --sombra: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.05); /* Sombra suave para elevación */
 }
 
-/* 2. RESET Y ESTILOS GLOBALES */
+/* ==========================================================================
+   2. RESET Y ESTILOS GLOBALES (Normalización de la página)
+   ========================================================================== */
+
+/* 
+  Selector Universal (*):
+  Aplica un reseteo básico a todos los elementos del DOM.
+  - `box-sizing: border-box`: Fundamental en CSS moderno. Hace que el padding y 
+    el borde se incluyan dentro del cálculo del ancho (width) y alto (height), 
+    evitando desbordamientos horizontales inesperados.
+  - `margin: 0` y `padding: 0`: Elimina los márgenes y rellenos por defecto que 
+    cada navegador implementa de manera dispar (User-Agent Stylesheet).
+*/
 * {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
 }
 
+/* 
+  Estilos del Cuerpo (body):
+  - `font-family`: System Font Stack nativo. Utiliza las fuentes del sistema 
+    operativo del usuario (San Francisco en Apple, Segoe UI en Windows, Roboto en Android),
+    lo que elimina tiempos de descarga de fuentes externas y mejora la velocidad de carga.
+  - `background-color`: Aplica el color de fondo general definido en `:root`.
+  - `color`: Hereda el color de texto a todos los nodos hijos.
+  - `line-height: 1.5`: Proporción recomendada para legibilidad tipográfica accesible.
+  - `padding: 40px 20px`: Espaciado perimetral para que el contenido no toque los bordes en móviles.
+*/
 body {
     font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
     background-color: var(--color-fondo);
@@ -39,25 +89,56 @@ body {
     padding: 40px 20px;
 }
 
+/* 
+  Contenedor Principal (.contenedor):
+  - `max-width: 700px`: Limita la expansión del contenido en pantallas panorámicas, 
+    evitando líneas de texto excesivamente largas y difíciles de leer.
+  - `margin: 0 auto`: Centra horizontalmente el bloque dentro de la ventana del navegador.
+  Uso correcto: Envolver todo el contenido semántico principal dentro de esta clase.
+*/
 .contenedor {
     max-width: 700px;
     margin: 0 auto;
 }
 
-/* 3. TIPOGRAFÍA Y ENCABEZADOS */
+/* ==========================================================================
+   3. TIPOGRAFÍA Y ENCABEZADOS
+   ========================================================================== */
+
+/* 
+  Título Principal (h1):
+  - `font-size: 28px`: Escala jerárquica destacada.
+  - `color: var(--color-primario)`: Aplica el color institucional.
+  - `margin-bottom: 8px`: Separa sutilmente el título de su subtítulo inferior.
+*/
 h1 {
     font-size: 28px;
     color: var(--color-primario);
     margin-bottom: 8px;
 }
 
+/* 
+  Subtítulo (.subtitulo):
+  - `color: var(--color-texto-secundario)`: Atenúa el texto para indicar jerarquía secundaria.
+  - `font-size: 15px`: Tamaño ligeramente menor que el texto base.
+  - `margin-bottom: 24px`: Espacio generoso antes del primer panel interactivo.
+*/
 .subtitulo {
     color: var(--color-texto-secundario);
     font-size: 15px;
     margin-bottom: 24px;
 }
 
-/* 4. PANELES Y TARJETAS (Estructuras de Información) */
+/* ==========================================================================
+   4. PANELES Y TARJETAS (Estructuras de Información / Cards)
+   ==========================================================================
+   Propósito:
+   Crea bloques modulares tipo tarjeta (Card pattern) para agrupar contenido 
+   relacionado (formularios, listados, dashboards).
+
+   Uso correcto:
+   Aplicar la clase `class="panel"` a elementos `<section>`, `<article>` o `<div>`.
+   ========================================================================== */
 .panel {
     background: var(--color-superficie);
     border-radius: var(--radio-borde);
@@ -67,11 +148,26 @@ h1 {
     border: 1px solid var(--color-borde);
 }
 
-/* 5. FORMULARIOS E INPUTS */
+/* ==========================================================================
+   5. FORMULARIOS E INPUTS
+   ========================================================================== */
+
+/* 
+  Grupo de Campo (.grupo-campo):
+  - Agrupa semánticamente una etiqueta `<label>` con su respectivo `<input>`.
+  - `margin-bottom: 16px`: Mantiene un ritmo vertical ordenado entre campos consecutivos.
+*/
 .grupo-campo {
     margin-bottom: 16px;
 }
 
+/* 
+  Etiquetas (label):
+  - `display: block`: Fuerza al label a comportarse como elemento de bloque, 
+    posicionándose encima del input correspondiente.
+  - `font-size: 14px` y `font-weight: 600`: Tipografía semi-negrita para rápida identificación.
+  - `margin-bottom: 6px`: Espacio entre la etiqueta y el control de texto.
+*/
 label {
     display: block;
     font-size: 14px;
@@ -80,6 +176,15 @@ label {
     color: var(--color-texto);
 }
 
+/* 
+  Campos de Entrada (input[type="text"], input[type="number"], select):
+  - `width: 100%`: Ocupa todo el ancho del contenedor padre (diseño fluido).
+  - `padding: 10px 14px`: Área de toque cómoda, óptima para navegación táctil y móvil.
+  - `border`: Delimitado por la variable `--color-borde`.
+  - `outline: none`: Remueve el borde azul predeterminado del navegador para controlarlo 
+    personalizadamente con el pseudo-estado `:focus`.
+  - `transition`: Genera una animación suave (0.2s) al ganar o perder el foco.
+*/
 input[type="text"],
 input[type="number"],
 select {
@@ -93,12 +198,32 @@ select {
     transition: border-color 0.2s, box-shadow 0.2s;
 }
 
+/* 
+  Estado de Foco (input:focus, select:focus):
+  Accesibilidad y Feedback Visual:
+  - Cambia el borde al color primario institucional.
+  - Aplica un anillo de foco translúcido (`box-shadow`) que indica al usuario 
+    (especialmente con navegación por teclado) qué campo está activo en ese instante.
+*/
 input:focus, select:focus {
     border-color: var(--color-primario);
     box-shadow: 0 0 0 3px rgba(0, 51, 102, 0.15);
 }
 
-/* 6. BOTONES */
+/* ==========================================================================
+   6. BOTONES (Acciones principales / CTA)
+   ========================================================================== */
+
+/* 
+  Botón Base (.btn):
+  - `width: 100%`: Enfoque móvil (mobile-first), proporcionando un área de clic grande y fácil de presionar.
+  - `cursor: pointer`: Indica visualmente que es un elemento interactivo cliqueable.
+  - `border: none`: Limpia el estilo de botón tosco nativo del navegador.
+  - `transition: background-color 0.2s ease`: Suaviza la transición hacia el estado :hover.
+  
+  Uso correcto:
+  Se aplica a botones `<button class="btn">` o enlaces estilizados `<a class="btn">`.
+*/
 .btn {
     display: inline-block;
     width: 100%;
@@ -113,17 +238,43 @@ input:focus, select:focus {
     transition: background-color 0.2s ease;
 }
 
+/* 
+  Estado Hover del Botón (.btn:hover):
+  - Oscurece el color de fondo usando `--color-primario-hover` al pasar el cursor del mouse,
+    confirmando la capacidad de acción interactiva.
+*/
 .btn:hover {
     background-color: var(--color-primario-hover);
 }
 
-/* 7. TARJETAS DEL LISTADO (Renderizado dinámico de la API) */
+/* ==========================================================================
+   7. TARJETAS DEL LISTADO (Renderizado dinámico de la API)
+   ==========================================================================
+   Propósito:
+   Estructuras diseñadas para mostrar los registros traídos dinámicamente 
+   desde el servidor mediante peticiones GET.
+   ========================================================================== */
+
+/* 
+  Contenedor de la Grilla (.grilla-datos):
+  - Utiliza CSS Flexbox en dirección vertical (`flex-direction: column`).
+  - `gap: 12px`: Gestiona la separación uniforme entre tarjetas dinámicas sin 
+    necesidad de lidiar con márgenes en el primer o último elemento.
+*/
 .grilla-datos {
     display: flex;
     flex-direction: column;
     gap: 12px;
 }
 
+/* 
+  Tarjeta Individual de Item (.tarjeta-item):
+  - Inyectada dinámicamente mediante JavaScript.
+  - `display: flex`, `justify-content: space-between`, `align-items: center`: 
+    Alinea el nombre del elemento a la izquierda y la etiqueta de precio a la derecha.
+  - `border-left: 5px solid var(--color-acento)`: Borde lateral con color de acento
+    que aporta identidad gráfica y jerarquía al elemento visual.
+*/
 .tarjeta-item {
     background: var(--color-superficie);
     border-radius: var(--radio-borde);
@@ -136,11 +287,21 @@ input:focus, select:focus {
     box-shadow: 0 1px 3px rgba(0,0,0,0.05);
 }
 
+/* 
+  Nombre/Identificador del Registro (.tarjeta-item strong):
+  - Resalta el título del recurso recuperado con el color institucional.
+*/
 .tarjeta-item strong {
     color: var(--color-primario);
     font-size: 16px;
 }
 
+/* 
+  Badge o Etiqueta de Precio (.tarjeta-item .precio-tag):
+  - Estiliza el valor económico en formato de "píldora" (pill badge).
+  - `background-color: rgba(...)`: Fondo semi-transparente del color de acento.
+  - `border-radius: 20px`: Bordes redondeados completos tipo cápsula.
+*/
 .tarjeta-item .precio-tag {
     font-weight: 700;
     color: var(--color-acento);
@@ -149,7 +310,24 @@ input:focus, select:focus {
     border-radius: 20px;
 }
 
-/* 8. ALERTAS Y FEEDBACK DE ESTADOS HTTP */
+/* ==========================================================================
+   8. ALERTAS Y FEEDBACK DE ESTADOS HTTP
+   ==========================================================================
+   Propósito:
+   Banners de retroalimentación en tiempo real para informar el resultado de 
+   las peticiones HTTP al usuario.
+
+   Uso correcto desde JavaScript:
+   - Mantener `display: none` por defecto.
+   - Para mostrar: `elemento.style.display = 'block'; elemento.textContent = 'Mensaje';`
+   - Para ocultar: `elemento.style.display = 'none';`
+   ========================================================================== */
+
+/* 
+  Clase Base (.alerta):
+  - Define el padding, bordes redondeados y tipografía comunes a todas las alertas.
+  - `display: none`: Permanece invisible hasta que un script active su visualización.
+*/
 .alerta {
     padding: 12px 16px;
     border-radius: var(--radio-borde);
@@ -159,14 +337,26 @@ input:focus, select:focus {
     display: none; /* Controlado dinámicamente desde JS */
 }
 
+/* 
+  Variante de Error (.alerta-error):
+  - Se activa ante respuestas HTTP 4xx (Bad Request, Unauthorized) o 5xx (Internal Server Error),
+    así como fallos de conexión o red.
+  - Utiliza los tokens de color de error para fondo, texto y borde.
+*/
 .alerta-error {
     background-color: var(--color-error-fondo);
     color: var(--color-error-texto);
     border: 1px solid #fca5a5;
 }
 
+/* 
+  Variante de Éxito (.alerta-exito):
+  - Se activa ante respuestas HTTP 200 (OK), 201 (Created) o confirmaciones exitosas.
+  - Utiliza los tokens de color de éxito para comunicar tranquilidad y confirmación.
+*/
 .alerta-exito {
     background-color: var(--color-exito-fondo);
     color: var(--color-exito-texto);
     border: 1px solid #86efac;
 }
+

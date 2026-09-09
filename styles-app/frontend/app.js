@@ -197,5 +197,3 @@ formulario.addEventListener('submit', async (e) => {
    apenas se inicializa la página sin necesidad de interactuar manualmente.
    ========================================================================== */
 obtenerRegistros();
-
-

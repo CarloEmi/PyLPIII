@@ -1,52 +1,220 @@
 <!DOCTYPE html>
+<!-- 
+  ==========================================================================
+  CLIENTE WEB - PyLP III
+  Interfaz de usuario para consumo de API REST (Arquitectura Cliente-Servidor)
+  ==========================================================================
+  Propósito:
+  Este documento HTML define la estructura semántica y accesible del cliente web.
+  Está diseñado bajo el patrón de arquitectura desacoplada, donde la vista
+  (Frontend) se encarga de capturar datos del usuario, invocar endpoints HTTP 
+  (GET, POST) y renderizar respuestas de forma reactiva sin recargar la página.
+
+  Uso correcto:
+  - Mantener la separación de responsabilidades: estructura en HTML, estilos en 
+    styles.css y comportamiento dinámico en app.js.
+  - Asegurar que los identificadores (`id`) se mantengan sincronizados con las 
+    referencias en el script JavaScript.
+-->
+
+<!-- 
+  Atributo lang="es": 
+  Indica a los navegadores, lectores de pantalla y motores de búsqueda que el 
+  contenido principal está en español. Vital para accesibilidad web y pronunciación 
+  correcta de sintetizadores de voz.
+-->
 <html lang="es">
 <head>
+    <!-- 
+      Codificación de Caracteres:
+      UTF-8 garantiza la representación correcta de tildes, signos de puntuación, 
+      la 'ñ' y caracteres especiales universales, evitando errores de renderizado.
+    -->
     <meta charset="UTF-8">
+
+    <!-- 
+      Configuración del Viewport (Diseño Responsivo):
+      Asegura que la página se adapte a cualquier ancho de pantalla (móviles, 
+      tablets, escritorios). Define un ancho igual al ancho del dispositivo (`device-width`) 
+      y una escala inicial de 1.0 sin zoom forzado.
+    -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- 
+      Título del Documento:
+      Aparece en la pestaña del navegador, en marcadores y en resultados de búsqueda.
+      Buenas prácticas: Debe ser conciso, único y describir claramente la vista actual.
+    -->
     <title>Cliente Web - PyLP III</title>
-    <!-- Vinculación de la guía de estilos centralizada -->
+
+    <!-- 
+      Vinculación de la Hoja de Estilos (styles.css):
+      Se ubica en el <head> para que el navegador descargue y aplique el diseño 
+      antes de renderizar los elementos, evitando el "destello de contenido sin estilo" (FOUC).
+      Uso correcto: Utilizar rutas relativas o absolutas consistentes según el despliegue.
+    -->
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
 
+    <!-- 
+      Contenedor Principal (.contenedor):
+      Funciona como layout wrapper o envoltorio centralizado.
+      Uso correcto: Aplica un ancho máximo (max-width) y centra el contenido 
+      horizontalmente con margin: 0 auto en pantallas grandes, garantizando legibilidad.
+    -->
     <div class="contenedor">
+        
+        <!-- 
+          Encabezado Principal (<header>):
+          Elemento semántico que agrupa la identidad y el contexto de la aplicación.
+        -->
         <header>
+            <!-- 
+              Título de Nivel 1 (<h1>):
+              Representa el título principal y único de la página.
+              Buenas prácticas: Debe existir exactamente un solo <h1> por página para 
+              mantener una jerarquía semántica óptima y cumplir con estándares de accesibilidad (WCAG) y SEO.
+            -->
             <h1>Gestión de Recursos (Cliente Web)</h1>
+
+            <!-- 
+              Subtítulo (.subtitulo):
+              Aclara el rol arquitectónico de la aplicación (consumo de API).
+              Uso correcto: Se estiliza con colores secundarios para denotar menor jerarquía visual.
+            -->
             <p class="subtitulo">Interfaz desacoplada que consume la API del AE1</p>
         </header>
 
-        <!-- Mensajes de feedback dinámico según códigos HTTP -->
+        <!-- 
+          ======================================================================
+          MENSAJES DE FEEDBACK Y ESTADOS HTTP DINÁMICOS
+          ======================================================================
+          Propósito:
+          Elementos destinados a mostrar al usuario el resultado de operaciones 
+          asíncronas (Fetch API) de forma visual.
+          
+          Uso correcto:
+          - Ambos divs inician con `display: none` gracias a la clase `.alerta` en styles.css.
+          - En JavaScript, según el código de estado HTTP recibido (ej. 200/201 vs 400/500),
+            se inyecta el mensaje mediante `caja.textContent = '...'` y se muestra 
+            cambiando `caja.style.display = 'block'`.
+          - Se recomienda ocultar la alerta anterior antes de mostrar una nueva o tras 
+            un temporizador (setTimeout).
+        -->
+        <!-- Caja de error: Utilizada ante fallos de validación, errores de red o códigos HTTP 4xx / 5xx -->
         <div id="caja-error" class="alerta alerta-error"></div>
+
+        <!-- Caja de éxito: Utilizada ante transacciones completadas satisfactoriamente (HTTP 200 / 201) -->
         <div id="caja-exito" class="alerta alerta-exito"></div>
 
-        <!-- Formulario de Alta de Datos -->
+        <!-- 
+          ======================================================================
+          PANEL 1: FORMULARIO DE ALTA DE DATOS (PETICIONES HTTP POST)
+          ======================================================================
+          Propósito:
+          Captura datos ingresados por el usuario para su posterior serialización a JSON 
+          y envío al servidor mediante una solicitud POST.
+          
+          Estructura semántica:
+          - Se utiliza `<section class="panel">` como tarjeta visual independiente.
+        -->
         <section class="panel">
+            <!-- 
+              Título de Sección (<h2>):
+              Establece el encabezado del panel respetando la jerarquía tras el <h1>.
+            -->
             <h2 style="font-size: 18px; margin-bottom: 15px; color: var(--color-primario);">Registrar Nuevo Elemento</h2>
+            
+            <!-- 
+              Formulario (<form>):
+              El id "formulario-registro" permite asociar un event listener 'submit' en JS.
+              Uso correcto:
+              - En app.js debe usarse `e.preventDefault()` en el evento submit para impedir
+                que el navegador recargue la página o intente un envío síncrono tradicional.
+            -->
             <form id="formulario-registro">
+                
+                <!-- 
+                  Grupo de Campo 1: Nombre / Identificador
+                  Uso correcto: La clase .grupo-campo proporciona separación vertical consistente.
+                -->
                 <div class="grupo-campo">
+                    <!-- 
+                      Etiqueta (<label for="campo-nombre">):
+                      Accesibilidad fundamental: El atributo 'for' debe coincidir exactamente 
+                      con el 'id' del input asociado. Permite que al hacer clic en el texto 
+                      se active o enfoque el campo de entrada.
+                    -->
                     <label for="campo-nombre">Nombre / Identificador:</label>
+
+                    <!-- 
+                      Campo de Texto (<input type="text">):
+                      - id="campo-nombre": Permite capturar su valor en JS con document.getElementById().
+                      - placeholder: Texto de ayuda contextual que desaparece al escribir.
+                      - required: Validación HTML5 nativa que impide enviar el formulario si el campo está vacío.
+                    -->
                     <input type="text" id="campo-nombre" placeholder="Ej: Consulta Médica / Producto" required>
                 </div>
                 
+                <!-- 
+                  Grupo de Campo 2: Valor Numérico / Precio
+                -->
                 <div class="grupo-campo">
                     <label for="campo-precio">Valor / Precio ($):</label>
+                    <!-- 
+                      Campo Numérico (<input type="number">):
+                      - step="0.01": Permite valores decimales con precisión de dos dígitos (ideal para moneda).
+                      - required: Obliga a completar un número antes de proceder.
+                      - Al ser de tipo number, el navegador móvil despliega automáticamente el teclado numérico.
+                    -->
                     <input type="number" id="campo-precio" placeholder="0.00" step="0.01" required>
                 </div>
 
+                <!-- 
+                  Botón de Envío (<button type="submit">):
+                  - type="submit": Dispara la validación nativa de todos los campos con 'required' 
+                    y emite el evento 'submit' en el formulario padre.
+                  - class="btn": Aplica el estilo visual corporativo definido en styles.css.
+                -->
                 <button type="submit" class="btn">Guardar en el Servidor</button>
             </form>
         </section>
 
-        <!-- Listado en tiempo real obtenido con GET -->
+        <!-- 
+          ======================================================================
+          PANEL 2: LISTADO DE REGISTROS EN TIEMPO REAL (PETICIONES HTTP GET)
+          ======================================================================
+          Propósito:
+          Espacio destinado a la visualización de los datos almacenados en el servidor.
+        -->
         <section class="panel">
             <h2 style="font-size: 18px; margin-bottom: 15px; color: var(--color-primario);">Registros en la Base de Datos</h2>
+            
+            <!-- 
+              Contenedor Dinámico (#listado):
+              - id="listado": Punto de anclaje donde la lógica JavaScript inyectará las 
+                tarjetas (.tarjeta-item) generadas a partir de la respuesta JSON del servidor.
+              - class="grilla-datos": Define un layout flexible que separa cada tarjeta automáticamente.
+              - Estado inicial: Incluye un mensaje temporal de "Cargando..." que será reemplazado 
+                dinámicamente una vez que la promesa de Fetch se resuelva.
+            -->
             <div id="listado" class="grilla-datos">
                 <p style="color: var(--color-texto-secundario);">Cargando registros desde la API...</p>
             </div>
         </section>
     </div>
 
-    <!-- Script con la lógica asíncrona de Fetch -->
+    <!-- 
+      Carga de Scripts Asíncronos (app.js):
+      Se coloca al final del <body> para garantizar que todo el árbol DOM ya esté 
+      parseado y disponible en memoria antes de que JavaScript intente manipularlo 
+      con getElementById o querySelector.
+      
+      Uso correcto:
+      - También puede colocarse en el <head> siempre y cuando se utilice el atributo `defer`.
+    -->
     <script src="app.js"></script>
 </body>
 </html>
+
