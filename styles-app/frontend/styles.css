@@ -1,0 +1,172 @@
+/* ==========================================================================
+   GUÍA DE ESTILOS BASE - PARADIGMAS Y LENGUAJES DE PROGRAMACIÓN III
+   UCP Posadas - FAITA
+   ========================================================================== */
+
+/* 1. SISTEMA DE VARIABLES (Paleta y Espaciado Global) */
+:root {
+    --color-primario: #003366;       /* Azul institucional */
+    --color-primario-hover: #002244;
+    --color-acento: #11caa0;         /* Verde agua moderno */
+    --color-fondo: #f1f5f9;          /* Gris muy suave */
+    --color-superficie: #ffffff;     /* Blanco para tarjetas y paneles */
+    --color-texto: #1e293b;
+    --color-texto-secundario: #64748b;
+    --color-borde: #cbd5e1;
+    
+    /* Estados de respuesta de la API */
+    --color-exito-fondo: #dcfce7;
+    --color-exito-texto: #15803d;
+    --color-error-fondo: #fee2e2;
+    --color-error-texto: #b91c1c;
+
+    --radio-borde: 8px;
+    --sombra: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
+}
+
+/* 2. RESET Y ESTILOS GLOBALES */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    background-color: var(--color-fondo);
+    color: var(--color-texto);
+    line-height: 1.5;
+    padding: 40px 20px;
+}
+
+.contenedor {
+    max-width: 700px;
+    margin: 0 auto;
+}
+
+/* 3. TIPOGRAFÍA Y ENCABEZADOS */
+h1 {
+    font-size: 28px;
+    color: var(--color-primario);
+    margin-bottom: 8px;
+}
+
+.subtitulo {
+    color: var(--color-texto-secundario);
+    font-size: 15px;
+    margin-bottom: 24px;
+}
+
+/* 4. PANELES Y TARJETAS (Estructuras de Información) */
+.panel {
+    background: var(--color-superficie);
+    border-radius: var(--radio-borde);
+    box-shadow: var(--sombra);
+    padding: 24px;
+    margin-bottom: 24px;
+    border: 1px solid var(--color-borde);
+}
+
+/* 5. FORMULARIOS E INPUTS */
+.grupo-campo {
+    margin-bottom: 16px;
+}
+
+label {
+    display: block;
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 6px;
+    color: var(--color-texto);
+}
+
+input[type="text"],
+input[type="number"],
+select {
+    width: 100%;
+    padding: 10px 14px;
+    font-size: 15px;
+    border: 1px solid var(--color-borde);
+    border-radius: var(--radio-borde);
+    background-color: #fff;
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+input:focus, select:focus {
+    border-color: var(--color-primario);
+    box-shadow: 0 0 0 3px rgba(0, 51, 102, 0.15);
+}
+
+/* 6. BOTONES */
+.btn {
+    display: inline-block;
+    width: 100%;
+    padding: 12px 18px;
+    font-size: 15px;
+    font-weight: 600;
+    color: #fff;
+    background-color: var(--color-primario);
+    border: none;
+    border-radius: var(--radio-borde);
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.btn:hover {
+    background-color: var(--color-primario-hover);
+}
+
+/* 7. TARJETAS DEL LISTADO (Renderizado dinámico de la API) */
+.grilla-datos {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.tarjeta-item {
+    background: var(--color-superficie);
+    border-radius: var(--radio-borde);
+    padding: 16px;
+    border: 1px solid var(--color-borde);
+    border-left: 5px solid var(--color-acento);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+}
+
+.tarjeta-item strong {
+    color: var(--color-primario);
+    font-size: 16px;
+}
+
+.tarjeta-item .precio-tag {
+    font-weight: 700;
+    color: var(--color-acento);
+    background-color: rgba(17, 202, 160, 0.1);
+    padding: 4px 10px;
+    border-radius: 20px;
+}
+
+/* 8. ALERTAS Y FEEDBACK DE ESTADOS HTTP */
+.alerta {
+    padding: 12px 16px;
+    border-radius: var(--radio-borde);
+    font-size: 14px;
+    font-weight: 500;
+    margin-bottom: 16px;
+    display: none; /* Controlado dinámicamente desde JS */
+}
+
+.alerta-error {
+    background-color: var(--color-error-fondo);
+    color: var(--color-error-texto);
+    border: 1px solid #fca5a5;
+}
+
+.alerta-exito {
+    background-color: var(--color-exito-fondo);
+    color: var(--color-exito-texto);
+    border: 1px solid #86efac;
+}

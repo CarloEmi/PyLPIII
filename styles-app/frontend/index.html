@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cliente Web - PyLP III</title>
+    <!-- Vinculación de la guía de estilos centralizada -->
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+    <div class="contenedor">
+        <header>
+            <h1>Gestión de Recursos (Cliente Web)</h1>
+            <p class="subtitulo">Interfaz desacoplada que consume la API del AE1</p>
+        </header>
+
+        <!-- Mensajes de feedback dinámico según códigos HTTP -->
+        <div id="caja-error" class="alerta alerta-error"></div>
+        <div id="caja-exito" class="alerta alerta-exito"></div>
+
+        <!-- Formulario de Alta de Datos -->
+        <section class="panel">
+            <h2 style="font-size: 18px; margin-bottom: 15px; color: var(--color-primario);">Registrar Nuevo Elemento</h2>
+            <form id="formulario-registro">
+                <div class="grupo-campo">
+                    <label for="campo-nombre">Nombre / Identificador:</label>
+                    <input type="text" id="campo-nombre" placeholder="Ej: Consulta Médica / Producto" required>
+                </div>
+                
+                <div class="grupo-campo">
+                    <label for="campo-precio">Valor / Precio ($):</label>
+                    <input type="number" id="campo-precio" placeholder="0.00" step="0.01" required>
+                </div>
+
+                <button type="submit" class="btn">Guardar en el Servidor</button>
+            </form>
+        </section>
+
+        <!-- Listado en tiempo real obtenido con GET -->
+        <section class="panel">
+            <h2 style="font-size: 18px; margin-bottom: 15px; color: var(--color-primario);">Registros en la Base de Datos</h2>
+            <div id="listado" class="grilla-datos">
+                <p style="color: var(--color-texto-secundario);">Cargando registros desde la API...</p>
+            </div>
+        </section>
+    </div>
+
+    <!-- Script con la lógica asíncrona de Fetch -->
+    <script src="app.js"></script>
+</body>
+</html>
